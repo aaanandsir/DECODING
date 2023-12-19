@@ -40,7 +40,7 @@ def gen():
     
     # ... (other parts of your gen function)
 
-    elif gen_choice == 4:
+    if gen_choice == 4:
         marshal_operations()
     
     # ... (other parts of your gen function)
@@ -59,7 +59,7 @@ def verifier():
     
     # ... (other parts of your verifier function)
 
-    elif verifier_choice == 4:
+    if verifier_choice == 4:
         marshal_operations()
 
     # ... (other parts of your verifier function)
@@ -78,7 +78,7 @@ def base64_gen():
     
     # ... (other parts of your base64_gen function)
 
-    elif base_gen_choice == 4:
+    if base_gen_choice == 4:
         marshal_operations()
 
     # ... (other parts of your base64_gen function)
