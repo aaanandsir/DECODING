@@ -1,5 +1,3 @@
-import hashlib
-import base64
 import marshal
 import os
 import sys
@@ -136,8 +134,8 @@ def marshal_operations():
 def main():
     try:
         marshal_operations()
-    except:
-        print(yellow + "\n[" + red + "Error" + yellow + "]" + cyan + " Something went wrong! Please try again after some time." + reset)
+    except Exception as e:
+        print(yellow + "\n[" + red + "Error" + yellow + "]" + cyan + f" Something went wrong! Error: {e}" + reset)
         error_msg = input(cyan + "Press any key to Close the program ..." + reset)
         exit(0)
 
