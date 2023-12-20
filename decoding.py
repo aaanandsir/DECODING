@@ -23,8 +23,8 @@ def banner():
     print("   ==//==//==\033[92m   └  ┘└  ┘└──┘└  ┘└───┘└──┘└──┘└  ┘")
     print("    //  // \033[93m v 1.0")
     print("\033[0m")
-    print("\033[93m                     <===[["+red+" coded by"+cyan+" AN9ND_XD "+reset+"\033[93m]===>\n"+reset)
-    print("\033[93m                  <---("+red+" AN9ND <3 - Turbo Hackers >:) "+cyan+")--->\n"+reset)
+    print("\033[93m                     <===[["+red+" coded by"+cyan+" TURB0 "+reset+"\033[93m]===>\n"+reset)
+    print("\033[93m                  <---("+red+" GitHub- Turbo Hackers "+cyan+")--->\n"+reset)
 
 # gen code
 def gen():
@@ -196,38 +196,44 @@ def marshal_operations():
         print(red + "Error: Please enter a valid option (numeric value)." + reset)
 
 # main code
+def main_choice():
+    banner()
+    print(red + " [ " + green + "Selected : Main Menu" + red + " ]" + reset)
+    print(" ")
+
+    print(yellow + "\t\t\t      [" + green + "1" + yellow + "]➟ " + green + "Hashing" + reset)
+    print(yellow + "\t\t\t      [" + green + "2" + yellow + "]➟ " + green + "Verifier" + reset)
+    print(yellow + "\t\t\t      [" + green + "3" + yellow + "]➟ " + green + "Base64 Encoder/Decoder" + reset)
+    print(yellow + "\t\t\t      [" + green + "4" + yellow + "]➟ " + green + "Marshal Encoder/Decoder" + reset)
+    print(yellow + "\t\t\t      [" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
+
+    try:
+        main_choice = int(input(green + "\nSelect option : " + reset))
+        if main_choice == 1:
+            gen()
+        elif main_choice == 2:
+            verifier()
+        elif main_choice == 3:
+            base64_gen()
+        elif main_choice == 4:
+            marshal_operations()
+        elif main_choice == 0:
+            print(cyan + "\nThanks For Using This Program" + reset)
+        else:
+            print(cyan + "\n Wrong Input ! , Try again" + reset)
+            time.sleep(2)
+            main_choice()
+    except ValueError:
+        print(red + "Error: Please enter a valid option (numeric value)." + reset)
+
+# main code
 def main():
     try:
-        banner()
-        print(yellow + "\t\t\t      [" + green + "1" + yellow + "]➟ " + green + "Generate Hash" + reset)
-        print(yellow + "\t\t\t      [" + green + "2" + yellow + "]➟ " + green + "Verify Hash" + reset)
-        print(yellow + "\t\t\t      [" + green + "3" + yellow + "]➟ " + green + "Base64 Encoder/Decoder" + reset)
-        print(yellow + "\t\t\t      [" + green + "4" + yellow + "]➟ " + green + "Marshal Encoder/Decoder" + reset)
-        print(yellow + "\t\t\t      [" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-        try:
-            choice = int(input(green + "\nSelect option : " + reset))
-            if choice == 1:
-                gen()
-            elif choice == 2:
-                verifier()
-            elif choice == 3:
-                base64_gen()
-            elif choice == 4:
-                marshal_operations()
-            elif choice == 0:
-                print(cyan + "\nThanks For Using This Program" + reset)
-            else:
-                print(cyan + "\n Wrong Input ! , Try again" + reset)
-                time.sleep(2)
-                main()
-        except ValueError:
-            print(red + "Error: Please enter a valid option (numeric value)." + reset)
-
-    except Exception as e:
-        print(yellow + "\n[" + red + "Error" + yellow + "]" + cyan + f" Something went wrong! {e}. Please try again after some time." + reset)
+        main_choice()
+    except:
+        print(yellow + "\n[" + red + "Error" + yellow + "]" + cyan + " Something went wrong! Please try again after some time." + reset)
         error_msg = input(cyan + "Press any key to Close the program ..." + reset)
+        exit(0)
 
 if __name__ == "__main__":
     main()
-    
