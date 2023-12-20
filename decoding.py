@@ -1,143 +1,106 @@
 import marshal
-import os
-import sys
-import time
+import base64
 
-# Colors
-red = '\033[91m'
-green = '\033[92m'
-yellow = '\033[93m'
-cyan = '\033[96m'
-reset = '\033[0m'
+def encode_and_save(filename):
+    with open(filename, 'r') as file:
+        script = file.read()
 
-# Banner Code
-def banner():
-    os.system("clear")
-    print("\033[91m")
-    print("        //  //")
-    print("     ==//==//==\033[92m ┌  ┐┌──┐┌──┐┌  ┐     ┌──┐┌──┐┌──┐")
-    print("      //  //\033[92m    ├──┤├──┤└──┐├──┤┌───┐│ ─┐├┤  │  │")
-    print("   ==//==//==\033[92m   └  ┘└  ┘└──┘└  ┘└───┘└──┘└──┘└  ┘")
-    print("    //  // \033[93m v 1.0")
-    print("\033[0m")
-    print("\033[93m                     <===[["+red+" coded by"+cyan+" TURB0 "+reset+"\033[93m]===>\n"+reset)
-    print("\033[93m                  <---("+red+" GitHub- Turbo Hackers "+cyan+")--->\n"+reset)
-
-# Marshal Code
-def encode_data(data, file_path):
     try:
-        with open(file_path, "wb") as f:
-            marshal.dump(data, f)
-        print(f"Object encoded using marshal and saved to {file_path}")
+        compiled_code = compile(script, '<string>', 'exec')
+        encoded_data = marshal.dumps(compiled_code)
+        encoded_str = repr(encoded_data)
+
+        result = f"import marshal\nexec(marshal.loads(b{encoded_str}))"
+
+        with open('encoded_data.py', 'w') as file:
+            file.write(result)
+
+        print("Encoding completed! Result saved in 'encoded_data.py'")
     except Exception as e:
-        print(f"Error encoding object using marshal: {e}")
+        print(f"Error: {e}")
+        print("Failed to encode. Returning to the main menu.")
 
-def decode_data(file_path):
+def load_and_decode(filename):
     try:
-        with open(file_path, "rb") as f:
-            data = marshal.load(f)
-            print("Object decoded using marshal:", data)
-            return data
+        with open(filename, 'r') as file:
+            encoded_str = file.read()
+
+        # Extract the binary data from the encoded string
+        encoded_data_str = encoded_str.split('b')[-1].strip()
+        encoded_data = eval(encoded_data_str)
+
+        compiled_code = marshal.loads(encoded_data)
+
+        return compiled_code
     except Exception as e:
-        print(f"Error decoding object using marshal: {e}")
+        print(f"Error: {e}")
+        print("Failed to decode. Returning to the main menu.")
 
-def marshal_operations():
-    banner()
-    print(red + " [ " + green + "Selected : Marshal Encoder/Decoder" + red + " ]" + reset)
-    print(" ")
+def main_menu():
+    print("===== Main Menu =====")
+    print("1. Encode Python File")
+    print("2. Decode Marshal Script")
+    print("0. Exit")
 
-    def encode_operation():
-        banner()
-        print(red + " [ " + green + "Selected : Marshal Encoder" + red + " ]" + reset)
-        print(" ")
-        data_to_encode = input(green + "Enter the data to encode using marshal:\n : " + reset)
-        file_path = input(green + "\nEnter the file path to save the encoded data:\n : " + reset)
+def encode_menu():
+    filename = input("Enter the filename of the Python file to encode: ")
+    encode_and_save(filename)
 
-        try:
-            python_object = eval(data_to_encode)
-            encode_data(python_object, file_path)
-        except Exception as e:
-            print(cyan + "\nError converting input data to Python object: " + str(e) + reset)
+    while True:
+        print("1. Main Menu")
+        print("2. Back")
+        print("3. Exit")
+        choice = input("Enter your choice: ")
 
-        print(yellow + "\n\t\t[" + green + "1" + yellow + "]➟ " + green + "Main Menu" + reset)
-        print(yellow + "\t\t[" + green + "2" + yellow + "]➟ " + green + "Back" + reset)
-        print(yellow + "\t\t[" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-        try:
-            back_choice = int(input(green + "\nSelect Option : " + reset))
-            if back_choice == 1:
-                main()
-            elif back_choice == 2:
-                marshal_operations()
-            elif back_choice == 0:
-                print(cyan + "\nThanks For Using This Program" + reset)
-            else:
-                print(cyan + "\n Wrong Input ! , Try again" + reset)
-                time.sleep(2)
-                encode_operation()
-        except ValueError:
-            print(red + "Error: Please enter a valid option (numeric value)." + reset)
-
-    def decode_operation():
-        banner()
-        print(red + " [ " + green + "Selected : Marshal Decoder" + red + " ]" + reset)
-        print(" ")
-        file_path = input(green + "Enter the file path with the encoded data using marshal:\n : " + reset)
-
-        try:
-            decode_data(file_path)
-        except Exception as e:
-            print(cyan + "\nError decoding data using marshal: " + str(e) + reset)
-
-        print(yellow + "\n\t\t[" + green + "1" + yellow + "]➟ " + green + "Main Menu" + reset)
-        print(yellow + "\t\t[" + green + "2" + yellow + "]➟ " + green + "Back" + reset)
-        print(yellow + "\t\t[" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-        try:
-            back_choice = int(input(green + "\nSelect Option : " + reset))
-            if back_choice == 1:
-                main()
-            elif back_choice == 2:
-                marshal_operations()
-            elif back_choice == 0:
-                print(cyan + "\nThanks For Using This Program" + reset)
-            else:
-                print(cyan + "\n Wrong Input ! , Try again" + reset)
-                time.sleep(2)
-                decode_operation()
-        except ValueError:
-            print(red + "Error: Please enter a valid option (numeric value)." + reset)
-
-    print(yellow + "\t\t\t      [" + green + "1" + yellow + "]➟ " + green + "Marshal Encode" + reset)
-    print(yellow + "\t\t\t      [" + green + "2" + yellow + "]➟ " + green + "Marshal Decode" + reset)
-    print(yellow + "\t\t\t      [" + green + "3" + yellow + "]➟ " + green + "Back" + reset)
-    print(yellow + "\t\t\t      [" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-    try:
-        marshal_choice = int(input(green + "\nSelect option : " + reset))
-        if marshal_choice == 1:
-            encode_operation()
-        elif marshal_choice == 2:
-            decode_operation()
-        elif marshal_choice == 3:
+        if choice == '1':
             main()
-        elif marshal_choice == 0:
-            print(cyan + "\nThanks For Using This Program" + reset)
+        elif choice == '2':
+            return
+        elif choice == '3':
+            print("Thanks for using the program.")
+            exit()
         else:
-            print(cyan + "\n Wrong Input ! , Try again" + reset)
-            time.sleep(2)
-            marshal_operations()
-    except ValueError:
-        print(red + "Error: Please enter a valid option (numeric value)." + reset)
+            print("Invalid choice. Please try again.")
 
-# Main Code
+def decode_menu():
+    filename = input("Enter the filename of the encoded data: ")
+
+    decoded_code = load_and_decode(filename)
+
+    if decoded_code is not None:
+        print("Decoding completed! Decoded code:")
+        print(decoded_code)
+
+    while True:
+        print("1. Main Menu")
+        print("2. Back")
+        print("3. Exit")
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            main()
+        elif choice == '2':
+            return
+        elif choice == '3':
+            print("Thanks for using the program.")
+            exit()
+        else:
+            print("Invalid choice. Please try again.")
+
 def main():
-    try:
-        marshal_operations()
-    except Exception as e:
-        print(yellow + "\n[" + red + "Error" + yellow + "]" + cyan + f" Something went wrong! Error: {e}" + reset)
-        error_msg = input(cyan + "Press any key to Close the program ..." + reset)
-        exit(0)
+    while True:
+        main_menu()
+        choice = input("Enter your choice: ")
 
-if __name__ == "__main__":
-    main()
+        if choice == '1':
+            encode_menu()
+        elif choice == '2':
+            decode_menu()
+        elif choice == '0':
+            print("Thanks for using the program.")
+            exit()
+        else:
+            print("Invalid choice. Please try again.")
+
+# Example usage:
+main()
