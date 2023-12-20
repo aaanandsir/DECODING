@@ -5,16 +5,15 @@ import os
 import sys
 import time
 
-# colors
+# Colors
 red = '\033[91m'
 green = '\033[92m'
 yellow = '\033[93m'
 cyan = '\033[96m'
 reset = '\033[0m'
 
-# banner Code
+# Banner Code
 def banner():
-    os.system("clear")
     os.system("clear")
     print("\033[91m")
     print("        //  //")
@@ -26,68 +25,8 @@ def banner():
     print("\033[93m                     <===[["+red+" coded by"+cyan+" TURB0 "+reset+"\033[93m]===>\n"+reset)
     print("\033[93m                  <---("+red+" GitHub- Turbo Hackers "+cyan+")--->\n"+reset)
 
-# gen code
-def gen():
-    banner()
-    print(red + " [ " + green + "Selected : Hashing {SHA256,MD5}" + red + " ]" + reset)
-    print(" ")
-
-    # ... (other parts of your gen function)
-
-    print(yellow + "\t\t\t      [" + green + "4" + yellow + "]➟ " + green + "Marshal Encoder/Decoder" + reset)
-    print(yellow + "\t\t\t      [" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-    try:
-        gen_choice = int(input(green + "\nSelect option : " + reset))
-        if gen_choice == 4:
-            marshal_operations()
-    except ValueError:
-        print(red + "Error: Please enter a valid option (numeric value)." + reset)
-
-    # ... (other parts of your gen function)
-
-# verifier code
-def verifier():
-    banner()
-    print(red + " [ " + green + "Selected : Verifier {SHA256,MD5}" + red + " ]" + reset)
-    print(" ")
-
-    # ... (other parts of your verifier function)
-
-    print(yellow + "\t\t\t      [" + green + "4" + yellow + "]➟ " + green + "Marshal Encoder/Decoder" + reset)
-    print(yellow + "\t\t\t      [" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-    try:
-        verifier_choice = int(input(green + "\nSelect option : " + reset))
-        if verifier_choice == 4:
-            marshal_operations()
-    except ValueError:
-        print(red + "Error: Please enter a valid option (numeric value)." + reset)
-
-    # ... (other parts of your verifier function)
-
-# base64 code
-def base64_gen():
-    banner()
-    print(red + " [ " + green + "Selected : Base64 Encoder/Decoder" + red + " ]" + reset)
-    print(" ")
-
-    # ... (other parts of your base64_gen function)
-
-    print(yellow + "\t\t\t      [" + green + "4" + yellow + "]➟ " + green + "Marshal Encoder/Decoder" + reset)
-    print(yellow + "\t\t\t      [" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-    try:
-        base_gen_choice = int(input(green + "\nSelect option : " + reset))
-        if base_gen_choice == 4:
-            marshal_operations()
-    except ValueError:
-        print(red + "Error: Please enter a valid option (numeric value)." + reset)
-
-    # ... (other parts of your base64_gen function)
-
-# marshal code
-def marshal_encode(data, file_path):
+# Marshal Code
+def encode_data(data, file_path):
     try:
         with open(file_path, "wb") as f:
             marshal.dump(data, f)
@@ -95,7 +34,7 @@ def marshal_encode(data, file_path):
     except Exception as e:
         print(f"Error encoding object using marshal: {e}")
 
-def marshal_decode(file_path):
+def decode_data(file_path):
     try:
         with open(file_path, "rb") as f:
             data = marshal.load(f)
@@ -109,9 +48,7 @@ def marshal_operations():
     print(red + " [ " + green + "Selected : Marshal Encoder/Decoder" + red + " ]" + reset)
     print(" ")
 
-    # ... (other parts of your marshal_operations function)
-
-    def marshal_encode_operation():
+    def encode_operation():
         banner()
         print(red + " [ " + green + "Selected : Marshal Encoder" + red + " ]" + reset)
         print(" ")
@@ -120,7 +57,7 @@ def marshal_operations():
 
         try:
             python_object = eval(data_to_encode)
-            marshal_encode(python_object, file_path)
+            encode_data(python_object, file_path)
         except Exception as e:
             print(cyan + "\nError converting input data to Python object: " + str(e) + reset)
 
@@ -132,25 +69,25 @@ def marshal_operations():
             back_choice = int(input(green + "\nSelect Option : " + reset))
             if back_choice == 1:
                 main()
-            if back_choice == 2:
+            elif back_choice == 2:
                 marshal_operations()
             elif back_choice == 0:
                 print(cyan + "\nThanks For Using This Program" + reset)
             else:
                 print(cyan + "\n Wrong Input ! , Try again" + reset)
                 time.sleep(2)
-                marshal_encode_operation()
+                encode_operation()
         except ValueError:
             print(red + "Error: Please enter a valid option (numeric value)." + reset)
 
-    def marshal_decode_operation():
+    def decode_operation():
         banner()
         print(red + " [ " + green + "Selected : Marshal Decoder" + red + " ]" + reset)
         print(" ")
         file_path = input(green + "Enter the file path with the encoded data using marshal:\n : " + reset)
 
         try:
-            decoded_data = marshal_decode(file_path)
+            decode_data(file_path)
         except Exception as e:
             print(cyan + "\nError decoding data using marshal: " + str(e) + reset)
 
@@ -162,14 +99,14 @@ def marshal_operations():
             back_choice = int(input(green + "\nSelect Option : " + reset))
             if back_choice == 1:
                 main()
-            if back_choice == 2:
+            elif back_choice == 2:
                 marshal_operations()
             elif back_choice == 0:
                 print(cyan + "\nThanks For Using This Program" + reset)
             else:
                 print(cyan + "\n Wrong Input ! , Try again" + reset)
                 time.sleep(2)
-                marshal_decode_operation()
+                decode_operation()
         except ValueError:
             print(red + "Error: Please enter a valid option (numeric value)." + reset)
 
@@ -181,9 +118,9 @@ def marshal_operations():
     try:
         marshal_choice = int(input(green + "\nSelect option : " + reset))
         if marshal_choice == 1:
-            marshal_encode_operation()
+            encode_operation()
         elif marshal_choice == 2:
-            marshal_decode_operation()
+            decode_operation()
         elif marshal_choice == 3:
             main()
         elif marshal_choice == 0:
@@ -195,41 +132,10 @@ def marshal_operations():
     except ValueError:
         print(red + "Error: Please enter a valid option (numeric value)." + reset)
 
-# main code
-def main_choice():
-    banner()
-    print(red + " [ " + green + "Selected : Main Menu" + red + " ]" + reset)
-    print(" ")
-
-    print(yellow + "\t\t\t      [" + green + "1" + yellow + "]➟ " + green + "Hashing" + reset)
-    print(yellow + "\t\t\t      [" + green + "2" + yellow + "]➟ " + green + "Verifier" + reset)
-    print(yellow + "\t\t\t      [" + green + "3" + yellow + "]➟ " + green + "Base64 Encoder/Decoder" + reset)
-    print(yellow + "\t\t\t      [" + green + "4" + yellow + "]➟ " + green + "Marshal Encoder/Decoder" + reset)
-    print(yellow + "\t\t\t      [" + green + "0" + yellow + "]➟ " + green + "Exit" + reset)
-
-    try:
-        main_choice = int(input(green + "\nSelect option : " + reset))
-        if main_choice == 1:
-            gen()
-        elif main_choice == 2:
-            verifier()
-        elif main_choice == 3:
-            base64_gen()
-        elif main_choice == 4:
-            marshal_operations()
-        elif main_choice == 0:
-            print(cyan + "\nThanks For Using This Program" + reset)
-        else:
-            print(cyan + "\n Wrong Input ! , Try again" + reset)
-            time.sleep(2)
-            main_choice()
-    except ValueError:
-        print(red + "Error: Please enter a valid option (numeric value)." + reset)
-
-# main code
+# Main Code
 def main():
     try:
-        main_choice()
+        marshal_operations()
     except:
         print(yellow + "\n[" + red + "Error" + yellow + "]" + cyan + " Something went wrong! Please try again after some time." + reset)
         error_msg = input(cyan + "Press any key to Close the program ..." + reset)
