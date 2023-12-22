@@ -1,106 +1,31 @@
 import marshal
-import base64
+import uncompyle6
 
-def encode_and_save(filename):
-    with open(filename, 'r') as file:
-        script = file.read()
-
+def decode_and_save():
     try:
-        compiled_code = compile(script, '<string>', 'exec')
-        encoded_data = marshal.dumps(compiled_code)
-        encoded_str = repr(encoded_data)
+        # Ask the user for input file name
+        input_file = input("Enter the name of the encoded marshal data file: ")
 
-        result = f"import marshal\nexec(marshal.loads(b{encoded_str}))"
+        # Read encoded data from input file
+        with open(input_file, 'rb') as file:
+            encoded_data = file.read()
 
-        with open('encoded_data.py', 'w') as file:
-            file.write(result)
+        # Decode data using marshal
+        decoded_data = marshal.loads(encoded_data)
 
-        print("Encoding completed! Result saved in 'encoded_data.py'")
+        # Ask the user for output file name
+        output_file = input("Enter the name of the file to save the decoded data: ")
+
+        # Use uncompyle6 to decompile bytecode to source code
+        source_code = uncompyle6.deparse_code(decoded_data, version=3.10)
+
+        # Save decoded source code to output file
+        with open(output_file, 'w') as file:
+            file.write(source_code)
+
+        print(f"Decoded data saved to {output_file}")
     except Exception as e:
-        print(f"Error: {e}")
-        print("Failed to encode. Returning to the main menu.")
+        print(f"Decoding failed: {e}")
 
-def load_and_decode(filename):
-    try:
-        with open(filename, 'r') as file:
-            encoded_str = file.read()
-
-        # Extract the binary data from the encoded string
-        encoded_data_str = encoded_str.split('b')[-1].strip()
-        encoded_data = eval(encoded_data_str)
-
-        compiled_code = marshal.loads(encoded_data)
-
-        return compiled_code
-    except Exception as e:
-        print(f"Error: {e}")
-        print("Failed to decode. Returning to the main menu.")
-
-def main_menu():
-    print("===== Main Menu =====")
-    print("1. Encode Python File")
-    print("2. Decode Marshal Script")
-    print("0. Exit")
-
-def encode_menu():
-    filename = input("Enter the filename of the Python file to encode: ")
-    encode_and_save(filename)
-
-    while True:
-        print("1. Main Menu")
-        print("2. Back")
-        print("3. Exit")
-        choice = input("Enter your choice: ")
-
-        if choice == '1':
-            main()
-        elif choice == '2':
-            return
-        elif choice == '3':
-            print("Thanks for using the program.")
-            exit()
-        else:
-            print("Invalid choice. Please try again.")
-
-def decode_menu():
-    filename = input("Enter the filename of the encoded data: ")
-
-    decoded_code = load_and_decode(filename)
-
-    if decoded_code is not None:
-        print("Decoding completed! Decoded code:")
-        print(decoded_code)
-
-    while True:
-        print("1. Main Menu")
-        print("2. Back")
-        print("3. Exit")
-        choice = input("Enter your choice: ")
-
-        if choice == '1':
-            main()
-        elif choice == '2':
-            return
-        elif choice == '3':
-            print("Thanks for using the program.")
-            exit()
-        else:
-            print("Invalid choice. Please try again.")
-
-def main():
-    while True:
-        main_menu()
-        choice = input("Enter your choice: ")
-
-        if choice == '1':
-            encode_menu()
-        elif choice == '2':
-            decode_menu()
-        elif choice == '0':
-            print("Thanks for using the program.")
-            exit()
-        else:
-            print("Invalid choice. Please try again.")
-
-# Example usage:
-main()
+# Call the function
+decode_and_save()
