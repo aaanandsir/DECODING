@@ -1,5 +1,5 @@
 import marshal
-import uncompyle6
+from uncompyle6 import deparse_code
 
 def decode_and_save(input_file, output_file):
     try:
@@ -9,8 +9,8 @@ def decode_and_save(input_file, output_file):
         # Load the marshal-encoded data
         code_object = marshal.loads(encoded_script)
 
-        # Use uncompyle6 to decompile the code object to source code
-        decompiled_code = uncompyle6.decompile_code(code_object)
+        # Use decompyle3 to decompile the code object to source code
+        decompiled_code = deparse_code(3.11, code_object)
 
         # Save the decompiled code to the output file
         with open(output_file, 'w', encoding='utf-8') as file:
