@@ -2,6 +2,8 @@ import marshal
 import subprocess
 
 def decode_and_save(input_file, output_file):
+    temp_file = 'temp.py'  # Initialize the temp_file variable outside the try block
+    
     try:
         with open(input_file, 'rb') as f:
             encoded_script = f.read()
@@ -9,9 +11,6 @@ def decode_and_save(input_file, output_file):
         # Load the marshal-encoded data
         code_object = marshal.loads(encoded_script)
 
-        # Create a temporary file to store the decompiled code
-        temp_file = 'temp.py'
-        
         # Write the code object to the temporary file
         with open(temp_file, 'w', encoding='utf-8') as file:
             file.write(repr(code_object))
